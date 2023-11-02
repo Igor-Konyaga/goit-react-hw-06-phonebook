@@ -1,33 +1,53 @@
-import { useState } from 'react';
+
 import css from './ContactForm.module.css';
 import { nanoid } from 'nanoid';
+import { useDispatch } from 'react-redux';
+import { addContact } from 'redux/contactsRedux';
 
-export const ContactForm = ({ onSubmit }) => {
-  const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+export const ContactForm = () => {
+  const dispatch = useDispatch();
 
-  const handleInput = e => {
-    const currentValue = e.target.value;
-    const currentName = e.target.name;
+  //   const [name, setName] = useState('');
+  //   const [number, setNumber] = useState('');
 
-    if (currentName === 'name') {
-      setName(currentValue);
-    } else {
-      setNumber(currentValue);
-    }
-  };
+  //   const handleInput = e => {
+  //     const currentValue = e.target.value;
+  //     const currentName = e.target.name;
 
-  const reset = () => {
-    setName('');
-    setNumber('');
-  };
+  //     if (currentName === 'name') {
+  //       setName(currentValue);
+  //     } else {
+  //       setNumber(currentValue);
+  //     }
+  //   };
+
+  //   const reset = () => {
+  //     setName('');
+  //     setNumber('');
+  //   };
+
+  //   const handleSubmit = e => {
+  //     e.preventDefault();
+
+  //     onSubmit({ name, number, id: nanoid() });
+
+  //     reset();
+  //   };
 
   const handleSubmit = e => {
     e.preventDefault();
 
-    onSubmit({ name, number, id: nanoid() });
+    const name = e.currentTarget.elements.name.value;
+    const number = e.currentTarget.elements.number.value;
 
-    reset();
+    const contact = {
+      name,
+      number,
+      id: nanoid(),
+    };
+    dispatch(addContact(contact));
+
+    e.currentTarget.reset();
   };
 
   return (
@@ -37,8 +57,8 @@ export const ContactForm = ({ onSubmit }) => {
         <input
           className={css.input}
           type="text"
-          onChange={handleInput}
-          value={name}
+          //  onChange={handleInput}
+          //  value={name}
           name="name"
           required
         />
@@ -48,8 +68,8 @@ export const ContactForm = ({ onSubmit }) => {
         <input
           className={css.input}
           type="tel"
-          onChange={handleInput}
-          value={number}
+          //  onChange={handleInput}
+          //  value={number}
           name="number"
           required
         />
