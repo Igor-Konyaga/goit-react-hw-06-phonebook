@@ -1,4 +1,4 @@
-import Notiflix from 'notiflix';
+
 
 const { createSlice } = require('@reduxjs/toolkit');
 
@@ -12,18 +12,7 @@ const contactsSlice = createSlice({
   initialState: INITIAL_STATE,
   reducers: {
     addContact(state, action) {
-      const audit = state.contacts.some(
-        contact => contact.name === action.payload.name
-      );
-
-      if (audit) {
-        Notiflix.Notify.failure(
-          `The name ${action.payload.name} already exists in contacts`
-        );
-        return;
-      } else {
-        state.contacts = [...state.contacts, action.payload];
-      }
+      state.contacts = [...state.contacts, action.payload];
     },
     deleteContact(state, action) {
       state.contacts = state.contacts.filter(
@@ -31,11 +20,7 @@ const contactsSlice = createSlice({
       );
     },
     setFilter(state, action) {
-      const normalizeFilter = action.payload.toLowerCase().trim();
-
-      state.contacts = state.contacts.filter(contact => {
-        return contact.name.toLowerCase().includes(normalizeFilter);
-      });
+      state.filter = action.payload;
     },
   },
 });
